@@ -24,3 +24,15 @@ const [count, setCount] = useState(0);
 // 2025-07-11 18:16:00 | edit #37
 const add = (a: number, b: number): number => {
 }
+// 2025-07-11 18:22:36 | edit #46
+// TODO: Clean this up
+// 2025-07-11 18:24:52 | edit #49
+interface Props {
+  title: string;
+  onClick: () => void;
+}
+// 2025-07-11 18:25:19 | edit #50
+interface Props {
+  title: string;
+  onClick: () => void;
+}
