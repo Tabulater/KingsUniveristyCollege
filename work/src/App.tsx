@@ -15,3 +15,7 @@ useEffect(() => {
 useEffect(() => {
   console.log('Mounted');
 }, []);
+// 2025-07-11 18:17:29 | edit #39
+export const Button = () => {
+  return <button>Click me</button>;
+}
