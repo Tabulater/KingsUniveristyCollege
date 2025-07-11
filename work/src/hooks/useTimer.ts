@@ -12,3 +12,7 @@ export const Button = () => {
 console.log('State updated');
 // 2025-07-11 18:12:06 | edit #31
 import { useState } from 'react';
+// 2025-07-11 18:14:07 | edit #34
+useEffect(() => {
+  console.log('Mounted');
+}, []);
