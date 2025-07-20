@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.neural_network import MLPRegressor
 import warnings
 warnings.filterwarnings('ignore')
@@ -78,21 +78,27 @@ class EnhancedQueueNeuralNetwork:
         
         train_mse = mean_squared_error(y_train_true, y_train_orig)
         val_mse = mean_squared_error(y_val_true, y_val_orig)
-        train_r2 = r2_score(y_train_true, y_train_orig)
-        val_r2 = r2_score(y_val_true, y_val_orig)
+        train_mae = mean_absolute_error(y_train_true, y_train_orig)
+        val_mae = mean_absolute_error(y_val_true, y_val_orig)
+        train_rmse = np.sqrt(train_mse)
+        val_rmse = np.sqrt(val_mse)
         
         if verbose:
             print(f"Training MSE: {train_mse:.6f}")
             print(f"Validation MSE: {val_mse:.6f}")
-            print(f"Training R²: {train_r2:.4f}")
-            print(f"Validation R²: {val_r2:.4f}")
+            print(f"Training MAE: {train_mae:.6f}")
+            print(f"Validation MAE: {val_mae:.6f}")
+            print(f"Training RMSE: {train_rmse:.6f}")
+            print(f"Validation RMSE: {val_rmse:.6f}")
             print(f"Training completed in {self.model.n_iter_} iterations")
         
         return {
             'train_mse': train_mse,
             'val_mse': val_mse,
-            'train_r2': train_r2,
-            'val_r2': val_r2,
+            'train_mae': train_mae,
+            'val_mae': val_mae,
+            'train_rmse': train_rmse,
+            'val_rmse': val_rmse,
             'n_iterations': self.model.n_iter_
         }
     
@@ -174,9 +180,53 @@ def train_enhanced_model():
     # Train enhanced model
     enhanced_nn = EnhancedQueueNeuralNetwork()
     results = enhanced_nn.train(X, y, verbose=True)
-    
+
     # Save enhanced model
     enhanced_nn.save_model('enhanced_queue_nn_model.pkl')
+
+    # --- PLOTTING SECTION ---
+    # Reload data for plotting
+    lambda_vals = df[variables['lambda']].values[mask]
+    lq_vals = df[variables['Lq']].values[mask]
+    rho_vals = df[variables['rho']].values[mask]
+    wq_real = y
+    # For enhanced model, X uses all features, but for plotting we want to show predictions as function of lambda, Lq, rho
+    # We'll use the same X as used for training
+    wq_pred = enhanced_nn.predict(X)
+
+    # Plot Wq vs lambda
+    plt.figure(figsize=(8,5))
+    plt.scatter(lambda_vals, wq_real, color='red', label='Real Wq', alpha=0.6)
+    plt.scatter(lambda_vals, wq_pred, color='blue', label='Predicted Wq', alpha=0.6)
+    plt.xlabel('Lambda (λ)')
+    plt.ylabel('Wq')
+    plt.title('Wq vs Lambda')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    # Plot Wq vs Lq
+    plt.figure(figsize=(8,5))
+    plt.scatter(lq_vals, wq_real, color='red', label='Real Wq', alpha=0.6)
+    plt.scatter(lq_vals, wq_pred, color='blue', label='Predicted Wq', alpha=0.6)
+    plt.xlabel('Lq')
+    plt.ylabel('Wq')
+    plt.title('Wq vs Lq')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    # Plot Wq vs Rho
+    plt.figure(figsize=(8,5))
+    plt.scatter(rho_vals, wq_real, color='red', label='Real Wq', alpha=0.6)
+    plt.scatter(rho_vals, wq_pred, color='blue', label='Predicted Wq', alpha=0.6)
+    plt.xlabel('Rho (ρ)')
+    plt.ylabel('Wq')
+    plt.title('Wq vs Rho')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+    # --- END PLOTTING SECTION ---
     
     # Compare with original model
     print(f"\n" + "="*70)
@@ -195,30 +245,36 @@ def train_enhanced_model():
         y_original = y[mask]
         
         y_pred_original = original_nn.predict(X_original)
-        original_r2 = r2_score(y_original, y_pred_original)
         original_mse = mean_squared_error(y_original, y_pred_original)
+        original_mae = mean_absolute_error(y_original, y_pred_original)
+        original_rmse = np.sqrt(original_mse)
         
         # Test enhanced model
         y_pred_enhanced = enhanced_nn.predict(X)
-        enhanced_r2 = r2_score(y, y_pred_enhanced)
         enhanced_mse = mean_squared_error(y, y_pred_enhanced)
+        enhanced_mae = mean_absolute_error(y, y_pred_enhanced)
+        enhanced_rmse = np.sqrt(enhanced_mse)
         
         print(f"Original Model (2 features):")
-        print(f"  R² Score: {original_r2:.4f}")
         print(f"  MSE: {original_mse:.4f}")
+        print(f"  MAE: {original_mae:.4f}")
+        print(f"  RMSE: {original_rmse:.4f}")
         
         print(f"\nEnhanced Model (8 features):")
-        print(f"  R² Score: {enhanced_r2:.4f}")
         print(f"  MSE: {enhanced_mse:.4f}")
+        print(f"  MAE: {enhanced_mae:.4f}")
+        print(f"  RMSE: {enhanced_rmse:.4f}")
         
-        improvement_r2 = enhanced_r2 - original_r2
         improvement_mse = (original_mse - enhanced_mse) / original_mse * 100
+        improvement_mae = (original_mae - enhanced_mae) / original_mae * 100
+        improvement_rmse = (original_rmse - enhanced_rmse) / original_rmse * 100
         
         print(f"\nImprovement:")
-        print(f"  R² improvement: {improvement_r2:.4f}")
         print(f"  MSE reduction: {improvement_mse:.2f}%")
+        print(f"  MAE reduction: {improvement_mae:.2f}%")
+        print(f"  RMSE reduction: {improvement_rmse:.2f}%")
         
-        if enhanced_r2 > original_r2:
+        if enhanced_mse < original_mse:
             print(f"\n✅ Enhanced model performs better!")
         else:
             print(f"\n⚠️  Enhanced model doesn't show significant improvement")

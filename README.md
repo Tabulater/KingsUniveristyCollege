@@ -34,13 +34,13 @@ The GUI provides a user-friendly interface with 4 main tabs:
 ### 📊 Basic Prediction Tab
 - **Input:** λ (arrival rate) and Lq (queue length)
 - **Output:** Wq (waiting time)
-- **Performance:** 92.26% validation R²
+- **Performance:** MSE, MAE, and RMSE (see below)
 - **Use when:** You only have basic queue data
 
 ### 🚀 Enhanced Prediction Tab  
 - **Input:** All 8 variables (λ, s, μ, ρ, W, Lq, Ls, P0)
 - **Output:** Wq (waiting time)
-- **Performance:** 98.64% validation R²
+- **Performance:** MSE, MAE, and RMSE (see below)
 - **Use when:** You have complete queue system data
 
 ### 📈 Model Comparison Tab
@@ -60,15 +60,15 @@ The GUI provides a user-friendly interface with 4 main tabs:
 ### Basic Model (2 variables)
 - **Input:** λ, Lq
 - **Architecture:** 256 → 128 → 64 neurons
-- **Training R²:** 95.80%
-- **Validation R²:** 92.26%
+- **Training MSE/MAE/RMSE:** See results below
+- **Validation MSE/MAE/RMSE:** See results below
 
 ### Enhanced Model (8 variables)
 - **Input:** λ, s, μ, ρ, W, Lq, Ls, P0
 - **Architecture:** 512 → 256 → 128 → 64 neurons  
-- **Training R²:** 99.23%
-- **Validation R²:** 98.64%
-- **Improvement:** +6.38% R², -81.76% MSE
+- **Training MSE/MAE/RMSE:** See results below
+- **Validation MSE/MAE/RMSE:** See results below
+- **Improvement:** -81.76% MSE, see MAE/RMSE below
 
 ---
 
@@ -98,7 +98,7 @@ Your Excel file (`dataset.csv`) contains 9 complete queue system variables:
 ✅ **User-friendly GUI** - Easy to use interface  
 ✅ **Real data trained** - Uses your 10,000-sample dataset  
 ✅ **Queue theory validated** - Follows Little's Law relationships  
-✅ **High accuracy** - Up to 98.64% validation R²  
+✅ **High performance** - Low MSE, MAE, and RMSE
 ✅ **Complete analysis** - Model comparison and data insights  
 
 ---
@@ -119,8 +119,8 @@ Your Excel file (`dataset.csv`) contains 9 complete queue system variables:
 ## 🎉 Results
 
 **Your neural network successfully:**
-- ✅ Predicts Wq from lambda and Lq with 92.26% accuracy
-- ✅ Uses all variables for 98.64% accuracy  
+- ✅ Predicts Wq from lambda and Lq with low error (MSE, MAE, RMSE)
+- ✅ Uses all variables for even lower error (MSE, MAE, RMSE)
 - ✅ Learns from your real queue data
 - ✅ Discovers its own "little law" based on your system
 - ✅ Provides easy-to-use GUI interface

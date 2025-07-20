@@ -179,77 +179,127 @@ class ImprovedQueueNeuralNetwork:
         print(f"Model loaded from '{filename}'")
 
 def train_improved_model():
-    """Train the improved neural network"""
-    
-    # Load data
-    df = pd.read_csv('dataset.csv')
-    
-    # Extract columns
-    lambda_col = df.columns[0]  # First column
-    lq_col = df.columns[6]      # 7th column (Lq)
-    wq_col = df.columns[4]      # 5th column (Wq)
-    
-    # Prepare data
-    X = df[[lambda_col, lq_col]].values
-    y = df[wq_col].values
-    
-    # Remove NaNs and infinite values
-    mask = ~(np.isnan(X).any(axis=1) | np.isnan(y) | np.isinf(X).any(axis=1) | np.isinf(y))
-    X = X[mask]
-    y = y[mask]
-    
-    print(f"Training improved neural network with {len(X)} samples")
-    print(f"Data ranges: lambda=[{X[:, 0].min():.4f}, {X[:, 0].max():.4f}], Lq=[{X[:, 1].min():.4f}, {X[:, 1].max():.4f}], Wq=[{y.min():.4f}, {y.max():.4f}]")
-    
-    # Train model
-    nn = ImprovedQueueNeuralNetwork()
-    results = nn.train(X, y, verbose=True)
-
-    # Save model
-    nn.save_model('improved_queue_nn_model.pkl')
-
-    # --- PLOTTING SECTION ---
-    # Reload data for plotting
-    lambda_vals = df[lambda_col].values[mask]
-    lq_vals = df[lq_col].values[mask]
-    rho_vals = df[df.columns[3]].values[mask]  # 4th column is rho
-    wq_real = y
-    X_full = np.column_stack([lambda_vals, lq_vals])
-    wq_pred = nn.predict(X_full)
-
-    # Plot Wq vs lambda
-    plt.figure(figsize=(8,5))
-    plt.scatter(lambda_vals, wq_real, color='red', label='Real Wq', alpha=0.6)
-    plt.scatter(lambda_vals, wq_pred, color='blue', label='Predicted Wq', alpha=0.6)
-    plt.xlabel('Lambda (λ)')
-    plt.ylabel('Wq')
-    plt.title('Wq vs Lambda')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-    # Plot Wq vs Lq
-    plt.figure(figsize=(8,5))
-    plt.scatter(lq_vals, wq_real, color='red', label='Real Wq', alpha=0.6)
-    plt.scatter(lq_vals, wq_pred, color='blue', label='Predicted Wq', alpha=0.6)
-    plt.xlabel('Lq')
-    plt.ylabel('Wq')
-    plt.title('Wq vs Lq')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-
-    # Plot Wq vs Rho
-    plt.figure(figsize=(8,5))
-    plt.scatter(rho_vals, wq_real, color='red', label='Real Wq', alpha=0.6)
-    plt.scatter(rho_vals, wq_pred, color='blue', label='Predicted Wq', alpha=0.6)
-    plt.xlabel('Rho (ρ)')
-    plt.ylabel('Wq')
-    plt.title('Wq vs Rho')
-    plt.legend()
-    plt.grid(True)
-    plt.show()
-    # --- END PLOTTING SECTION ---
+    """Train the improved neural network on MM1.csv and MMS.csv"""
+    import os
+    datasets = [
+        ("dataset/MM1.csv", "MM1"),
+        ("dataset/MMS.csv", "MMS")
+    ]
+    for file_path, label in datasets:
+        print(f"\n{'='*30}\nTraining on {label} ({file_path})\n{'='*30}")
+        df = pd.read_csv(file_path)
+        if label == "MM1":
+            # MM1.csv: λ,Lq,Wq
+            lambda_col = 'λ'
+            lq_col = 'Lq'
+            wq_col = 'Wq'
+            X = df[[lambda_col, lq_col]].values
+            y = df[wq_col].values
+            mask = ~(np.isnan(X).any(axis=1) | np.isnan(y) | np.isinf(X).any(axis=1) | np.isinf(y))
+            X = X[mask]
+            y = y[mask]
+            lambda_vals = df[lambda_col].values[mask]
+            lq_vals = df[lq_col].values[mask]
+            wq_real = y
+            X_full = np.column_stack([lambda_vals, lq_vals])
+            nn = ImprovedQueueNeuralNetwork()
+            nn.train(X, y, verbose=True)
+            wq_pred = nn.predict(X_full)
+            # Plot Wq vs lambda (best fit lines only)
+            z_real = np.polyfit(lambda_vals, wq_real, 1)
+            p_real = np.poly1d(z_real)
+            z_pred = np.polyfit(lambda_vals, wq_pred, 1)
+            p_pred = np.poly1d(z_pred)
+            x_range = np.linspace(lambda_vals.min(), lambda_vals.max(), 200)
+            plt.figure(figsize=(8,5))
+            plt.plot(x_range, p_real(x_range), color='red', label='Real Wq (Best Fit)')
+            plt.plot(x_range, p_pred(x_range), color='blue', label='Predicted Wq (Best Fit)')
+            plt.xlabel('Lambda (λ)')
+            plt.ylabel('Wq')
+            plt.title(f'Wq vs Lambda ({label})')
+            plt.legend()
+            plt.grid(True)
+            plt.show()
+            # Plot Wq vs Lq (best fit lines only)
+            z_real = np.polyfit(lq_vals, wq_real, 1)
+            p_real = np.poly1d(z_real)
+            z_pred = np.polyfit(lq_vals, wq_pred, 1)
+            p_pred = np.poly1d(z_pred)
+            x_range = np.linspace(lq_vals.min(), lq_vals.max(), 200)
+            plt.figure(figsize=(8,5))
+            plt.plot(x_range, p_real(x_range), color='red', label='Real Wq (Best Fit)')
+            plt.plot(x_range, p_pred(x_range), color='blue', label='Predicted Wq (Best Fit)')
+            plt.xlabel('Lq')
+            plt.ylabel('Wq')
+            plt.title(f'Wq vs Lq ({label})')
+            plt.legend()
+            plt.grid(True)
+            plt.show()
+            # No rho in MM1.csv
+        elif label == "MMS":
+            # MMS.csv: λ,Lq,s,μ,ρ,Wq
+            lambda_col = 'λ'
+            lq_col = 'Lq'
+            rho_col = 'ρ'
+            wq_col = 'Wq'
+            X = df[[lambda_col, lq_col]].values
+            y = df[wq_col].values
+            mask = ~(np.isnan(X).any(axis=1) | np.isnan(y) | np.isinf(X).any(axis=1) | np.isinf(y))
+            X = X[mask]
+            y = y[mask]
+            lambda_vals = df[lambda_col].values[mask]
+            lq_vals = df[lq_col].values[mask]
+            rho_vals = df[rho_col].values[mask]
+            wq_real = y
+            X_full = np.column_stack([lambda_vals, lq_vals])
+            nn = ImprovedQueueNeuralNetwork()
+            nn.train(X, y, verbose=True)
+            wq_pred = nn.predict(X_full)
+            # Plot Wq vs lambda (best fit lines only)
+            z_real = np.polyfit(lambda_vals, wq_real, 1)
+            p_real = np.poly1d(z_real)
+            z_pred = np.polyfit(lambda_vals, wq_pred, 1)
+            p_pred = np.poly1d(z_pred)
+            x_range = np.linspace(lambda_vals.min(), lambda_vals.max(), 200)
+            plt.figure(figsize=(8,5))
+            plt.plot(x_range, p_real(x_range), color='red', label='Real Wq (Best Fit)')
+            plt.plot(x_range, p_pred(x_range), color='blue', label='Predicted Wq (Best Fit)')
+            plt.xlabel('Lambda (λ)')
+            plt.ylabel('Wq')
+            plt.title(f'Wq vs Lambda ({label})')
+            plt.legend()
+            plt.grid(True)
+            plt.show()
+            # Plot Wq vs Lq (best fit lines only)
+            z_real = np.polyfit(lq_vals, wq_real, 1)
+            p_real = np.poly1d(z_real)
+            z_pred = np.polyfit(lq_vals, wq_pred, 1)
+            p_pred = np.poly1d(z_pred)
+            x_range = np.linspace(lq_vals.min(), lq_vals.max(), 200)
+            plt.figure(figsize=(8,5))
+            plt.plot(x_range, p_real(x_range), color='red', label='Real Wq (Best Fit)')
+            plt.plot(x_range, p_pred(x_range), color='blue', label='Predicted Wq (Best Fit)')
+            plt.xlabel('Lq')
+            plt.ylabel('Wq')
+            plt.title(f'Wq vs Lq ({label})')
+            plt.legend()
+            plt.grid(True)
+            plt.show()
+            # Plot Wq vs Rho (best fit lines only)
+            z_real = np.polyfit(rho_vals, wq_real, 1)
+            p_real = np.poly1d(z_real)
+            z_pred = np.polyfit(rho_vals, wq_pred, 1)
+            p_pred = np.poly1d(z_pred)
+            x_range = np.linspace(rho_vals.min(), rho_vals.max(), 200)
+            plt.figure(figsize=(8,5))
+            plt.plot(x_range, p_real(x_range), color='red', label='Real Wq (Best Fit)')
+            plt.plot(x_range, p_pred(x_range), color='blue', label='Predicted Wq (Best Fit)')
+            plt.xlabel('Rho (ρ)')
+            plt.ylabel('Wq')
+            plt.title(f'Wq vs Rho ({label})')
+            plt.legend()
+            plt.grid(True)
+            plt.show()
     
     # Test predictions
     test_cases = [

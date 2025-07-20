@@ -96,3 +96,6 @@ def main():
 
 if __name__ == "__main__":
     main() 
+
+
+rmse = np.sqrt(np.mean((y_pred - y_test) ** 2))
