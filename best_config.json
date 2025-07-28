@@ -1,0 +1,13 @@
+{
+    "layers": [
+        64,
+        32
+    ],
+    "activation": "relu",
+    "optimizer": "nadam",
+    "learning_rate": 0.01,
+    "mse": 0.5472148060798645,
+    "mae": 0.09726690500974655,
+    "training_time": 6.623785734176636,
+    "efficiency_score": 1.5521157180524963
+}
