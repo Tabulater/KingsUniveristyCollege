@@ -140,6 +140,7 @@ Aashrith Raj Tatipamula
 ## 🙏 Acknowledgments
 
 - King's University College for the internship opportunity
+- Dr. Felipe Rodrigues for his mentorship
 
 ---
 
