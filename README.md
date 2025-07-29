@@ -1,6 +1,12 @@
 # Queue Prediction Models
 
-This repository contains machine learning models for predicting queue waiting times (Wq) using different algorithms.
+## 🎯 Project Overview
+
+This project implements three machine learning models to predict queue waiting times (Wq) using queue theory features:
+
+- **Neural Network**: TensorFlow/Keras implementation
+- **Random Forest**: Scikit-learn ensemble method
+- **XGBoost**: Gradient boosting implementation
 
 ## 📁 Project Structure
 
@@ -10,6 +16,10 @@ Neural Network/
 │   ├── Neural Network.py    # Neural network for Wq prediction
 │   ├── Random Forest.py     # Random Forest for Wq prediction
 │   └── XGBoost.py          # XGBoost for Wq prediction
+├── Notebooks/
+│   ├── Neural_Network_Detailed.ipynb   # Detailed neural network notebook
+│   ├── Random_Forest_Detailed.ipynb    # Detailed random forest notebook
+│   └── XGBoost_Detailed.ipynb          # Detailed XGBoost notebook
 ├── dataset/
 │   ├── dataset.csv          # Main dataset with queue metrics
 │   ├── MM1.csv             # MM1 queue model data
@@ -20,14 +30,9 @@ Neural Network/
 ├── requirements.txt         # Python dependencies
 └── README.md               # Project documentation
 ```
+└── README.md               # Project documentation
+## 📁 Project Structure
 
-## 🎯 Project Overview
-
-This project implements three machine learning models to predict queue waiting times (Wq) using queue theory features:
-
-- **Neural Network**: TensorFlow/Keras implementation
-- **Random Forest**: Scikit-learn ensemble method
-- **XGBoost**: Gradient boosting implementation
 
 ## 📊 Data
 
@@ -58,7 +63,7 @@ pip install pandas numpy scikit-learn tensorflow matplotlib xgboost
 
 ### Neural Network Model
 
-```python
+```bash
 python "Models/Neural Network.py"
 ```
 
@@ -71,7 +76,7 @@ Features:
 
 ### Random Forest Model
 
-```python
+```bash
 python "Models/Random Forest.py"
 ```
 
@@ -82,7 +87,7 @@ Features:
 
 ### XGBoost Model
 
-```python
+```bash
 python "Models/XGBoost.py"
 ```
 
@@ -94,7 +99,7 @@ Features:
 
 ### Hyperparameter Optimization
 
-```python
+```bash
 python bestnetwork.py
 ```
 
@@ -102,7 +107,7 @@ Tests different neural network configurations to find optimal hyperparameters.
 
 ### Data Analysis
 
-```python
+```bash
 python descriptive_analysis.py
 ```
 
@@ -111,8 +116,9 @@ Provides basic statistical summary of the dataset.
 ## 📈 Model Performance
 
 All models output:
+
 - **MAE**: Mean Absolute Error
-- **MSE**: Mean Squared Error  
+- **MSE**: Mean Squared Error
 - **RMSE**: Root Mean Squared Error
 - Sample predictions for first 10 test cases
 - Visualization plots comparing actual vs predicted values
@@ -120,6 +126,7 @@ All models output:
 ## 🎛️ Configuration
 
 The `best_config.json` contains the optimal neural network configuration found through hyperparameter tuning:
+
 - Layers: [64, 32]
 - Activation: ReLU
 - Optimizer: Adam
@@ -144,3 +151,4 @@ Aashrith Raj Tatipamula
 ---
 
 **Note**: This project is designed for educational purposes in queue prediction and machine learning applications.
+python "Models/Random Forest.py"
