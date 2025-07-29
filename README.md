@@ -131,7 +131,6 @@ The `best_config.json` contains the optimal neural network configuration found t
 - **Standardized features**: Data preprocessing with StandardScaler
 - **Consistent evaluation**: Same metrics across all models
 - **Visualization**: Scatter plots for feature vs target relationships
-- **Hyperparameter tuning**: Automated optimization for neural network
 
 ## 👨‍💻 Author
 

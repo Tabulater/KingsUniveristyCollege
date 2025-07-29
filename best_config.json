@@ -4,7 +4,7 @@
         32
     ],
     "activation": "relu",
-    "optimizer": "nadam",
+    "optimizer": "adam",
     "learning_rate": 0.01,
     "mse": 0.5472148060798645,
     "mae": 0.09726690500974655,
