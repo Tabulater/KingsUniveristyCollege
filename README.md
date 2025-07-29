@@ -1,64 +1,58 @@
-# Neural Network Project - Queue Prediction System
+# Queue Prediction Models
 
-This repository contains a comprehensive machine learning project focused on queue prediction using various algorithms including Neural Networks, Random Forest, and XGBoost.
+This repository contains machine learning models for predicting queue waiting times (Wq) using different algorithms.
 
 ## 📁 Project Structure
 
 ```
 Neural Network/
 ├── Models/
-│   ├── Neural Network.py    # Main neural network implementation
-│   ├── Random Forest.py     # Random Forest implementation
-│   └── XGBoost.py          # XGBoost implementation
+│   ├── Neural Network.py    # Neural network for Wq prediction
+│   ├── Random Forest.py     # Random Forest for Wq prediction
+│   └── XGBoost.py          # XGBoost for Wq prediction
 ├── dataset/
 │   ├── dataset.csv          # Main dataset with queue metrics
 │   ├── MM1.csv             # MM1 queue model data
 │   └── MMS.csv             # MMS queue model data
-├── best_config.json         # Best neural network configuration
-├── bestnetwork.py           # Optimized neural network implementation
-├── descriptive_analysis.py  # Data analysis and visualization
+├── best_config.json         # Best neural network hyperparameters
+├── bestnetwork.py           # Hyperparameter optimization script
+├── descriptive_analysis.py  # Basic data statistics
 ├── requirements.txt         # Python dependencies
 └── README.md               # Project documentation
 ```
 
 ## 🎯 Project Overview
 
-This project implements and compares different machine learning algorithms for queue prediction:
+This project implements three machine learning models to predict queue waiting times (Wq) using queue theory features:
 
-- **Neural Networks**: Deep learning approach with configurable architecture
-- **Random Forest**: Ensemble learning method using decision trees
-- **XGBoost**: Gradient boosting framework for efficient predictions
+- **Neural Network**: TensorFlow/Keras implementation
+- **Random Forest**: Scikit-learn ensemble method
+- **XGBoost**: Gradient boosting implementation
+
+## 📊 Data
+
+The models use queue simulation data with the following features:
+- `lambda`: Arrival rate
+- `Lq`: Queue length
+- `s`: Number of servers
+- `mu`: Service rate
+- `rho`: Utilization factor
+- `Wq`: Waiting time (target variable)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-Make sure you have Python 3.7+ installed with the following packages:
+Install required packages:
 
 ```bash
-pip install pandas numpy scikit-learn tensorflow matplotlib seaborn xgboost
+pip install pandas numpy scikit-learn tensorflow matplotlib xgboost
 ```
 
 ### Installation
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd Neural-Network
-```
-
-2. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-## 📊 Data
-
-The project uses queue simulation data stored in the `dataset/` directory:
-
-- `dataset.csv`: Main dataset with queue metrics
-- `MM1.csv`: Single-server queue model data
-- `MMS.csv`: Multi-server queue model data
+1. Clone the repository
+2. Install dependencies: `pip install -r requirements.txt`
 
 ## 🔧 Usage
 
@@ -68,11 +62,12 @@ The project uses queue simulation data stored in the `dataset/` directory:
 python "Models/Neural Network.py"
 ```
 
-The neural network implementation includes:
-- Configurable architecture
-- Hyperparameter optimization
-- Model persistence
-- Performance evaluation
+Features:
+- 2 hidden layers (32, 16 neurons)
+- ReLU activation
+- Adam optimizer
+- MSE loss function
+- Performance metrics: MAE, MSE, RMSE
 
 ### Random Forest Model
 
@@ -81,10 +76,9 @@ python "Models/Random Forest.py"
 ```
 
 Features:
-- Ensemble learning approach
-- Feature importance analysis
-- Cross-validation
-- Performance metrics
+- 100 estimators
+- Default hyperparameters
+- Performance metrics: MAE, MSE, RMSE
 
 ### XGBoost Model
 
@@ -93,81 +87,60 @@ python "Models/XGBoost.py"
 ```
 
 Features:
-- Gradient boosting implementation
-- Hyperparameter tuning
-- Early stopping
-- Model evaluation
+- 100 estimators
+- Learning rate: 0.1
+- Max depth: 6
+- Performance metrics: MAE, MSE, RMSE
 
-### Descriptive Analysis
-
-```python
-python descriptive_analysis.py
-```
-
-Provides:
-- Data exploration and visualization
-- Statistical analysis
-- Feature correlation analysis
-- Data quality assessment
-
-### Optimized Neural Network
+### Hyperparameter Optimization
 
 ```python
 python bestnetwork.py
 ```
 
-Features:
-- Pre-optimized architecture
-- Best hyperparameters from tuning
-- Enhanced performance
-- Streamlined implementation
+Tests different neural network configurations to find optimal hyperparameters.
+
+### Data Analysis
+
+```python
+python descriptive_analysis.py
+```
+
+Provides basic statistical summary of the dataset.
 
 ## 📈 Model Performance
 
-The project includes comprehensive evaluation metrics for each model:
-
-- **Accuracy**: Overall prediction accuracy
-- **Precision**: True positive rate
-- **Recall**: Sensitivity
-- **F1-Score**: Harmonic mean of precision and recall
-- **Confusion Matrix**: Detailed classification results
+All models output:
+- **MAE**: Mean Absolute Error
+- **MSE**: Mean Squared Error  
+- **RMSE**: Root Mean Squared Error
+- Sample predictions for first 10 test cases
+- Visualization plots comparing actual vs predicted values
 
 ## 🎛️ Configuration
 
-The `best_config.json` file contains the optimal hyperparameters for the neural network model, discovered through systematic hyperparameter tuning.
+The `best_config.json` contains the optimal neural network configuration found through hyperparameter tuning:
+- Layers: [64, 32]
+- Activation: ReLU
+- Optimizer: Adam
+- Learning rate: 0.01
 
 ## 📝 Key Features
 
-- **Multi-algorithm comparison**: Compare performance across different ML approaches
-- **Hyperparameter optimization**: Automated tuning for optimal performance
-- **Data visualization**: Comprehensive analysis and plotting capabilities
-- **Model persistence**: Save and load trained models
-- **Cross-validation**: Robust evaluation methodology
-- **Organized structure**: Models separated into dedicated directory
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- **Regression models**: All models predict continuous Wq values
+- **Standardized features**: Data preprocessing with StandardScaler
+- **Consistent evaluation**: Same metrics across all models
+- **Visualization**: Scatter plots for feature vs target relationships
+- **Hyperparameter tuning**: Automated optimization for neural network
 
 ## 👨‍💻 Author
 
 Aashrith Raj Tatipamula
-Created as part of the King's Internship program.
 
 ## 🙏 Acknowledgments
 
 - King's University College for the internship opportunity
-- Open source machine learning community
-- Contributors and mentors
 
 ---
 
-**Note**: This project is designed for educational and research purposes in queue prediction and machine learning applications.
+**Note**: This project is designed for educational purposes in queue prediction and machine learning applications.
