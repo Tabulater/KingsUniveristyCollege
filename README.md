@@ -6,16 +6,19 @@ This repository contains a comprehensive machine learning project focused on que
 
 ```
 Neural Network/
-├── best_config.json          # Best neural network configuration
-├── bestnetwork.py            # Optimized neural network implementation
+├── Models/
+│   ├── Neural Network.py    # Main neural network implementation
+│   ├── Random Forest.py     # Random Forest implementation
+│   └── XGBoost.py          # XGBoost implementation
 ├── dataset/
-│   ├── dataset.csv           # Main dataset
-│   ├── MM1.csv              # MM1 queue model data
-│   └── MMS.csv              # MMS queue model data
-├── descriptive_analysis.py   # Data analysis and visualization
-├── Neural Network.py         # Main neural network implementation
-├── Random Forest.py          # Random Forest implementation
-└── XGBoost.py               # XGBoost implementation
+│   ├── dataset.csv          # Main dataset with queue metrics
+│   ├── MM1.csv             # MM1 queue model data
+│   └── MMS.csv             # MMS queue model data
+├── best_config.json         # Best neural network configuration
+├── bestnetwork.py           # Optimized neural network implementation
+├── descriptive_analysis.py  # Data analysis and visualization
+├── requirements.txt         # Python dependencies
+└── README.md               # Project documentation
 ```
 
 ## 🎯 Project Overview
@@ -62,7 +65,7 @@ The project uses queue simulation data stored in the `dataset/` directory:
 ### Neural Network Model
 
 ```python
-python "Neural Network.py"
+python "Models/Neural Network.py"
 ```
 
 The neural network implementation includes:
@@ -74,7 +77,7 @@ The neural network implementation includes:
 ### Random Forest Model
 
 ```python
-python "Random Forest.py"
+python "Models/Random Forest.py"
 ```
 
 Features:
@@ -86,7 +89,7 @@ Features:
 ### XGBoost Model
 
 ```python
-python "XGBoost.py"
+python "Models/XGBoost.py"
 ```
 
 Features:
@@ -106,6 +109,18 @@ Provides:
 - Statistical analysis
 - Feature correlation analysis
 - Data quality assessment
+
+### Optimized Neural Network
+
+```python
+python bestnetwork.py
+```
+
+Features:
+- Pre-optimized architecture
+- Best hyperparameters from tuning
+- Enhanced performance
+- Streamlined implementation
 
 ## 📈 Model Performance
 
@@ -128,6 +143,7 @@ The `best_config.json` file contains the optimal hyperparameters for the neural 
 - **Data visualization**: Comprehensive analysis and plotting capabilities
 - **Model persistence**: Save and load trained models
 - **Cross-validation**: Robust evaluation methodology
+- **Organized structure**: Models separated into dedicated directory
 
 ## 🤝 Contributing
 
@@ -143,11 +159,12 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 👨‍💻 Author
 
+Aashrith Raj Tatipamula
 Created as part of the King's Internship program.
 
 ## 🙏 Acknowledgments
 
-- King's College London for the internship opportunity
+- King's University College for the internship opportunity
 - Open source machine learning community
 - Contributors and mentors
 
