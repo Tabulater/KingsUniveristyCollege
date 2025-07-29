@@ -30,7 +30,6 @@ Neural Network/
 ├── requirements.txt         # Python dependencies
 └── README.md               # Project documentation
 ```
-└── README.md               # Project documentation
 ## 📁 Project Structure
 
 
