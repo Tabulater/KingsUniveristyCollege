@@ -150,4 +150,3 @@ Aashrith Raj Tatipamula
 ---
 
 **Note**: This project is designed for educational purposes in queue prediction and machine learning applications.
-python "Models/Random Forest.py"
